@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talão de Ocorrência Digital - GCM Limeira</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- pdf-lib CDN para geração de PDF -->
+    <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+    <!-- A linha do fontkit foi removida daqui -->
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <!-- Você pode substituir esta imagem por um logo real da GCM Limeira -->
+            <img src="https://via.placeholder.com/60x60/2952A3/FFFFFF?text=GCM" alt="Logo GCM Limeira" class="gcm-logo">
+            <h1>Talão de Ocorrência Digital</h1>
+            <span class="progress-indicator">Processo em andamento...</span>
+        </div>
+    </header>
+
+    <main id="app-container">
+        <form id="occurrenceForm">
+            <!-- Card 1: Identificação da Ocorrência -->
+            <div class="card">
+                <h2><i class="icon-document">��</i> Identificação da Ocorrência</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dataOcorrencia">DATA:</label>
+                        <input type="date" id="dataOcorrencia" name="dataOcorrencia" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="protocolo">PROTOCOLO:</label>
+                        <input type="text" id="protocolo" name="protocolo" placeholder="_______/2017">
+                    </div>
+                    <div class="form-group">
+                        <label for="togcm">T.O.GCM:</label>
+                        <input type="text" id="togcm" name="togcm" placeholder="_______/2017">
+                    </div>
+                    <div class="form-group">
+                        <label for="bopcRdo">BOPC/RDO:</label>
+                        <input type="text" id="bopcRdo" name="bopcRdo" placeholder="_______/2017">
+                    </div>
+                    <div class="form-group form-group-folio">
+                        <label for="folha1">FOLHA:</label>
+                        <input type="text" id="folha1" name="folha1" class="folha-input" maxlength="1">
+                        <span class="separator">|</span>
+                        <input type="text" id="folha2" name="folha2" class="folha-input" maxlength="1">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: Comunicação da Ocorrência -->
+            <div class="card">
+                <h2><i class="icon-phone">📞</i> Comunicação da Ocorrência</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="horaOcorrencia">HORA:</label>
+                        <input type="time" id="horaOcorrencia" name="horaOcorrencia" required>
+                    </div>
+                    <div class="form-group radio-group">
+                        <label>SOLICITAÇÃO:</label>
+                        <div>
+                            <input type="radio" id="viaCopi" name="solicitacao" value="VIA COPI">
+                            <label for="viaCopi">VIA COPI</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="diretoGuarnicao" name="solicitacao" value="DIRETO A GUARNIÇÃO">
+                            <label for="diretoGuarnicao">DIRETO A GUARNIÇÃO</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="deparouSe" name="solicitacao" value="DEPAROU-SE">
+                            <label for="deparouSe">DEPAROU-SE</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="solicitante">SOLICITANTE:</label>
+                        <input type="text" id="solicitante" name="solicitante">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group radio-group">
+                        <label>ENVOLVIDO:</label>
+                        <div>
+                            <input type="radio" id="envolvidoS" name="envolvido" value="S">
+                            <label for="envolvidoS">S</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="envolvidoN" name="envolvido" value="N">
+                            <label for="envolvidoN">N</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: Detalhes da Ocorrência -->
+            <div class="card">
+                <h2><i class="icon-lupa">🔍</i> Detalhes da Ocorrência</h2>
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="naturezaOcorrencia">NATUREZA:</label>
+                        <input type="text" id="naturezaOcorrencia" name="naturezaOcorrencia">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="logradouroOcorrencia">LOGRADOURO:</label>
+                        <input type="text" id="logradouroOcorrencia" name="logradouroOcorrencia">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="numeroOcorrencia">Nº:</label>
+                        <input type="text" id="numeroOcorrencia" name="numeroOcorrencia">
+                    </div>
+                    <div class="form-group">
+                        <label for="bairroOcorrencia">BAIRRO:</label>
+                        <input type="text" id="bairroOcorrencia" name="bairroOcorrencia">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card: Partes Envolvidas (Dinâmico) -->
+            <div class="card dynamic-section" id="partes-envolvidas">
+                <h2><i class="icon-people">👥</i> Partes Envolvidas</h2>
+                <div id="partes-container">
+                    <!-- Parte 1 - Modelo inicial -->
+                    <div class="parte-item" id="parte-1">
+                        <h3>Parte 1</h3>
+                        <div class="form-group radio-group type-selector">
+                            <label>TIPO:</label>
+                            <input type="radio" id="parte1Vitima" name="parte1Tipo" value="VÍTIMA">
+                            <label for="parte1Vitima">VÍTIMA</label>
+                            <input type="radio" id="parte1Autor" name="parte1Tipo" value="AUTOR">
+                            <label for="parte1Autor">AUTOR</label>
+                            <input type="radio" id="parte1Indiciado" name="parte1Tipo" value="INDICIADO">
+                            <label for="parte1Indiciado">INDICIADO</label>
+                            <input type="radio" id="parte1Sindicado" name="parte1Tipo" value="SINDICADO">
+                            <label for="parte1Sindicado">SINDICADO</label>
+                            <input type="radio" id="parte1Solicitante" name="parte1Tipo" value="SOLICITANTE">
+                            <label for="parte1Solicitante">SOLICITANTE</label>
+                            <input type="radio" id="parte1NaoDefinida" name="parte1Tipo" value="PARTE NÃO DEFINIDA">
+                            <label for="parte1NaoDefinida">NÃO DEFINIDA</label>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="parte1Nome">NOME:</label>
+                                <input type="text" id="parte1Nome" name="parte1Nome">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="parte1Nasc">NASC:</label>
+                                <input type="date" id="parte1Nasc" name="parte1Nasc">
+                            </div>
+                            <div class="form-group">
+                                <label for="parte1RG">RG:</label>
+                                <input type="text" id="parte1RG" name="parte1RG" placeholder="__________-____">
+                            </div>
+                            <div class="form-group">
+                                <label for="parte1CPF">CPF:</label>
+                                <input type="text" id="parte1CPF" name="parte1CPF" placeholder="___.___.___-__">
+                            </div>
+                            <div class="form-group">
+                                <label for="parte1UF">UF:</label>
+                                <input type="text" id="parte1UF" name="parte1UF" maxlength="2">
+                            </div>
+                            <div class="form-group radio-group">
+                                <label>SEXO:</label>
+                                <input type="radio" id="parte1SexoM" name="parte1Sexo" value="M">
+                                <label for="parte1SexoM">M</label>
+                                <input type="radio" id="parte1SexoF" name="parte1Sexo" value="F">
+                                <label for="parte1SexoF">F</label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="parte1Mae">MÃE:</label>
+                                <input type="text" id="parte1Mae" name="parte1Mae">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="parte1Pai">PAI:</label>
+                                <input type="text" id="parte1Pai" name="parte1Pai">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="parte1Logradouro">LOGRADOURO:</label>
+                                <input type="text" id="parte1Logradouro" name="parte1Logradouro">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="parte1Bairro">BAIRRO:</label>
+                                <input type="text" id="parte1Bairro" name="parte1Bairro">
+                            </div>
+                            <div class="form-group">
+                                <label for="parte1Cidade">CIDADE:</label>
+                                <input type="text" id="parte1Cidade" name="parte1Cidade">
+                            </div>
+                            <div class="form-group">
+                                <label for="parte1Natural">NATURAL:</label>
+                                <input type="text" id="parte1Natural" name="parte1Natural">
+                            </div>
+                            <div class="form-group">
+                                <label for="parte1Nacional">NACIONAL:</label>
+                                <input type="text" id="parte1Nacional" name="parte1Nacional">
+                            </div>
+                        </div>
+                        <button type="button" class="remove-item-btn" data-target="parte">Remover Parte</button>
+                    </div>
+                    <!-- Mais partes serão adicionadas aqui via JavaScript -->
+                </div>
+                <button type="button" id="addParteBtn" class="add-dynamic-btn">+ Adicionar Nova Parte</button>
+            </div>
+
+            <!-- Card: Veículos Envolvidos (Dinâmico) -->
+            <div class="card dynamic-section" id="veiculos-envolvidos">
+                <h2><i class="icon-car">��</i> Veículos Envolvidos</h2>
+                <div id="veiculos-container">
+                    <!-- Veículo 1 - Modelo inicial -->
+                    <div class="veiculo-item" id="veiculo-1">
+                        <h3>Veículo 1</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="veiculo1Placa">PLACA:</label>
+                                <input type="text" id="veiculo1Placa" name="veiculo1Placa" placeholder="___-____">
+                            </div>
+                            <div class="form-group">
+                                <label for="veiculo1Renavam">RENAVAM:</label>
+                                <input type="text" id="veiculo1Renavam" name="veiculo1Renavam">
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="veiculo1Proprietario">PROPRIETÁRIO:</label>
+                                <input type="text" id="veiculo1Proprietario" name="veiculo1Proprietario">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="veiculo1CNH">CNH:</label>
+                                <input type="text" id="veiculo1CNH" name="veiculo1CNH">
+                            </div>
+                            <div class="form-group">
+                                <label for="veiculo1Municipio">MUNICÍPIO:</label>
+                                <input type="text" id="veiculo1Municipio" name="veiculo1Municipio">
+                            </div>
+                            <div class="form-group">
+                                <label for="veiculo1UF">UF:</label>
+                                <input type="text" id="veiculo1UF" name="veiculo1UF" maxlength="2">
+                            </div>
+                        </div>
+
+                        <div class="reboque-section">
+                            <input type="checkbox" id="veiculo1HasReboque" name="veiculo1HasReboque">
+                            <label for="veiculo1HasReboque">Possui REBOQUE?</label>
+                            <div class="reboque-details" style="display: none;">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="veiculo1ReboquePlaca">PLACA REBOQUE:</label>
+                                        <input type="text" id="veiculo1ReboquePlaca" name="veiculo1ReboquePlaca" placeholder="___-____">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="veiculo1Chassi">CHASSI:</label>
+                                        <input type="text" id="veiculo1Chassi" name="veiculo1Chassi">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="veiculo1MarcaModelo">MARCA / MODELO:</label>
+                                        <input type="text" id="veiculo1MarcaModelo" name="veiculo1MarcaModelo" placeholder="___________-_____">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="veiculo1Ano">ANO:</label>
+                                        <input type="number" id="veiculo1Ano" name="veiculo1Ano" min="1900" max="2100">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="veiculo1Categoria">CATEGORIA:</label>
+                                        <input type="text" id="veiculo1Categoria" name="veiculo1Categoria">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="veiculo1Cor">COR:</label>
+                                        <input type="text" id="veiculo1Cor" name="veiculo1Cor">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="veiculo1QtdePassageiros">QTDE PASSAGEIROS:</label>
+                                        <input type="number" id="veiculo1QtdePassageiros" name="veiculo1QtdePassageiros" min="1">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="remove-item-btn" data-target="veiculo">Remover Veículo</button>
+                    </div>
+                    <!-- Mais veículos serão adicionados aqui via JavaScript -->
+                </div>
+                <button type="button" id="addVeiculoBtn" class="add-dynamic-btn">+ Adicionar Outro Veículo</button>
+            </div>
+
+            <!-- Card: Histórico da Ocorrência -->
+            <div class="card">
+                <h2><i class="icon-history">📝</i> Histórico da Ocorrência</h2>
+                <div class="form-group full-width">
+                    <label for="historicoOcorrencia">HISTÓRICO DA OCORRÊNCIA:</label>
+                    <textarea id="historicoOcorrencia" name="historicoOcorrencia" rows="10"></textarea>
+                </div>
+            </div>
+
+            <!-- Card: Composição -->
+            <div class="card">
+                <h2><i class="icon-group">👨‍✈️</i> Composição</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="encarregado">ENCARREGADO:</label>
+                        <input type="text" id="encarregado" name="encarregado">
+                    </div>
+                    <div class="form-group">
+                        <label for="posto">POSTO:</label>
+                        <input type="text" id="posto" name="posto">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="prefixoVtr">PREFIXO VTR:</label>
+                        <input type="text" id="prefixoVtr" name="prefixoVtr">
+                    </div>
+                    <div class="form-group">
+                        <label for="apoioVtr">APOIO VTR:</label>
+                        <input type="text" id="apoioVtr" name="apoioVtr">
+                    </div>
+                </div>
+                <div class="form-group full-width">
+                    <label for="gcmsIntegrantes">GCMS (integrantes da viatura, separe por vírgula):</label>
+                    <input type="text" id="gcmsIntegrantes" name="gcmsIntegrantes">
+                </div>
+                <div class="signature-block">
+                    <div class="signature-line">
+                        <p>ASSINATURA __________________</p>
+                    </div>
+                    <div class="signature-line">
+                        <p>______________________________________</p>
+                        <p>SUPERVISOR GERAL</p>
+                    </div>
+                    <div class="signature-line">
+                        <p>______________________________________</p>
+                        <p>DIRETOR OPERACIONAL</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+    <button type="submit" id="generatePdfBtn" class="primary-btn"><i class="icon-pdf">��</i> Gerar PDF do Formulário</button>
+    <button type="button" id="generateCleanPdfBtn" class="primary-btn" style="background-color: var(--color-azul-claro); color: var(--color-azul-noturno);"><i class="icon-pdf">��</i> Gerar Relatório Limpo</button>
+    <button type="button" class="secondary-btn"><i class="icon-save">💾</i> Salvar Rascunho</button>
+</div>
+        </form>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

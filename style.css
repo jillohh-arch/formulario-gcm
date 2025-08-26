@@ -1,0 +1,486 @@
+/* style.css */
+
+/* Definição de variáveis de cor para fácil personalização */
+:root {
+    --color-azul-noturno: hsl(215, 30%, 15%); /* Fundo principal escuro e profundo */
+    --color-azul-royal: hsl(225, 70%, 40%);   /* Destaques, botões primários, títulos de cards */
+    --color-azul-claro: hsl(210, 50%, 65%);   /* Bordas sutis, linhas de separação, botões secundários */
+    --color-card-background: hsl(210, 10%, 90%); /* Fundo claro dos cards para contraste */
+    --color-text-light: hsl(0, 0%, 100%);     /* Texto branco em fundos escuros */
+    --color-text-dark: hsl(215, 30%, 10%);    /* Texto escuro em fundos claros */
+    --color-border-subtle: hsl(210, 10%, 70%); /* Bordas padrão de inputs */
+    --color-danger: hsl(0, 70%, 50%); /* Cor para ações de remover/perigo */
+}
+
+/* Reset básico para consistência entre navegadores */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', 'Roboto', sans-serif; /* Fontes modernas e legíveis */
+    background-color: var(--color-azul-noturno);
+    color: var(--color-text-light);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ocupa a altura total da viewport */
+}
+
+/* Estilo do cabeçalho fixo */
+header {
+    background-color: var(--color-azul-royal);
+    padding: 1.5rem 2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: sticky; /* Fixo no topo ao rolar */
+    top: 0;
+    z-index: 1000;
+    border-bottom: 5px solid var(--color-azul-claro); /* Detalhe visual na borda */
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    max-width: 1200px; /* Limita a largura do conteúdo do cabeçalho */
+    margin: 0 auto; /* Centraliza */
+}
+
+.gcm-logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%; /* Borda arredondada para o logo */
+    margin-right: 1.5rem;
+    border: 2px solid var(--color-text-light);
+}
+
+header h1 {
+    font-size: 2.2rem;
+    color: var(--color-text-light);
+    margin: 0;
+    flex-grow: 1; /* Permite que o título ocupe o espaço restante */
+}
+
+.progress-indicator {
+    font-size: 0.9rem;
+    background-color: var(--color-azul-claro);
+    color: var(--color-azul-noturno);
+    padding: 0.5rem 1rem;
+    border-radius: 20px; /* Borda arredondada para o indicador */
+    font-weight: bold;
+}
+
+/* Área de conteúdo principal */
+main {
+    flex-grow: 1;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 2rem auto;
+}
+
+/* Estilo dos cards */
+.card {
+    background-color: var(--color-card-background);
+    color: var(--color-text-dark);
+    padding: 2.5rem 3rem;
+    border-radius: 12px; /* Cantos arredondados */
+    margin-bottom: 2.5rem;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25); /* Sombra para profundidade */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Animação ao passar o mouse */
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Efeito de elevação */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+}
+
+.card h2 {
+    font-size: 1.8rem;
+    color: var(--color-azul-royal);
+    margin-bottom: 1.8rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--color-azul-claro); /* Separador visual */
+    display: flex;
+    align-items: center;
+}
+
+/* Layout das linhas de formulário */
+.form-row {
+    display: flex;
+    flex-wrap: wrap; /* Quebra para a próxima linha em telas menores */
+    gap: 2rem; /* Espaço entre os grupos de formulário */
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    flex: 1; /* Permite que os grupos cresçam e diminuam */
+    min-width: 200px; /* Garante que os campos não fiquem muito apertados */
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full-width {
+    flex-basis: 100%; /* Ocupa a largura total da linha */
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.6rem;
+    font-weight: bold;
+    color: var(--color-azul-noturno);
+    font-size: 0.95rem;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+textarea,
+select {
+    width: 100%;
+    padding: 0.9rem 1.2rem;
+    border: 2px solid var(--color-border-subtle);
+    border-radius: 8px;
+    background-color: var(--color-text-light); /* Fundo branco para campos */
+    color: var(--color-text-dark);
+    font-size: 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--color-azul-royal); /* Borda azul royal ao focar */
+    box-shadow: 0 0 0 3px hsla(225, 70%, 40%, 0.3); /* Sombra suave */
+    outline: none; /* Remove o contorno padrão do navegador */
+}
+
+textarea {
+    resize: vertical; /* Permite redimensionar apenas verticalmente */
+    min-height: 120px;
+}
+
+/* Estilo para botões de rádio */
+.radio-group {
+    display: flex;
+    flex-direction: row; /* Alinha horizontalmente */
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.radio-group label {
+    margin-bottom: 0;
+    cursor: pointer;
+    font-weight: normal;
+    color: var(--color-text-dark);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.radio-group input[type="radio"] {
+    appearance: none; /* Esconde o rádio padrão */
+    width: 1.2rem;
+    height: 1.2rem;
+    border: 2px solid var(--color-azul-royal);
+    border-radius: 50%;
+    display: grid;
+    place-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.radio-group input[type="radio"]::before {
+    content: "";
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 50%;
+    transform: scale(0); /* Escondido por padrão */
+    transition: transform 0.2s ease;
+    box-shadow: inset 1em 1em var(--color-azul-royal); /* Preenche com azul royal */
+}
+
+.radio-group input[type="radio"]:checked::before {
+    transform: scale(1); /* Aparece quando selecionado */
+}
+
+/* Inputs de folha específicos */
+.form-group-folio {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-group-folio label {
+    margin-bottom: 0;
+}
+
+.form-group-folio .folha-input {
+    width: 40px;
+    text-align: center;
+    padding: 0.5rem;
+}
+
+.form-group-folio .separator {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--color-azul-noturno);
+}
+
+/* Seções dinâmicas (Partes, Veículos) */
+.dynamic-section {
+    position: relative;
+}
+
+.parte-item, .veiculo-item {
+    background-color: var(--color-text-light); /* Fundo branco para os itens dinâmicos */
+    border: 1px solid var(--color-azul-claro);
+    border-radius: 10px;
+    padding: 1.8rem;
+    margin-top: 1.5rem;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05); /* Sombra interna sutil */
+    position: relative;
+}
+
+.parte-item h3, .veiculo-item h3 {
+    font-size: 1.4rem;
+    color: var(--color-azul-royal);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px dashed var(--color-azul-claro); /* Linha tracejada */
+}
+
+.remove-item-btn {
+    background-color: var(--color-danger); /* Cor de perigo para remover */
+    color: var(--color-text-light);
+    border: none;
+    border-radius: 8px;
+    padding: 0.8rem 1.5rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-top: 1.5rem;
+    transition: background-color 0.2s ease;
+}
+
+.remove-item-btn:hover {
+    background-color: hsl(0, 70%, 40%); /* Um tom mais escuro ao passar o mouse */
+}
+
+.add-dynamic-btn {
+    background-color: var(--color-azul-royal);
+    color: var(--color-text-light);
+    border: none;
+    border-radius: 10px;
+    padding: 1rem 2rem;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-top: 2rem;
+    width: fit-content;
+    display: block; /* Para centralizar o botão */
+    margin-left: auto;
+    margin-right: auto;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.add-dynamic-btn:hover {
+    background-color: hsl(225, 70%, 30%);
+    transform: translateY(-3px); /* Efeito de elevação */
+}
+
+/* Seção de reboque */
+.reboque-section {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px dashed var(--color-azul-claro);
+}
+
+.reboque-section label[for^="veiculo"][type="checkbox"] {
+    display: inline-flex;
+    align-items: center;
+    font-weight: bold;
+    color: var(--color-azul-noturno);
+    margin-bottom: 1rem;
+    cursor: pointer;
+}
+
+.reboque-section input[type="checkbox"] {
+    margin-right: 0.8rem;
+    width: 1.3rem;
+    height: 1.3rem;
+    appearance: none; /* Esconde o checkbox padrão */
+    border: 2px solid var(--color-azul-royal);
+    border-radius: 4px;
+    display: inline-grid;
+    place-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.reboque-section input[type="checkbox"]::before {
+    content: "✔"; /* Ícone de check */
+    color: var(--color-text-light);
+    font-size: 0.8rem;
+    transform: scale(0);
+    transition: transform 0.2s ease;
+    background-color: var(--color-azul-royal);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 2px;
+}
+
+.reboque-section input[type="checkbox"]:checked::before {
+    transform: scale(1);
+}
+
+.reboque-details {
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--color-azul-claro);
+    border-radius: 8px;
+    background-color: hsla(225, 70%, 40%, 0.05); /* Fundo suave para o bloco de detalhes */
+}
+
+/* Bloco de assinatura */
+.signature-block {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--color-azul-claro);
+}
+
+.signature-line {
+    text-align: center;
+    color: var(--color-azul-noturno);
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.signature-line p {
+    margin: 0;
+    line-height: 1.4;
+}
+
+.signature-line p:first-child {
+    border-bottom: 1px solid var(--color-azul-noturno);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Botões de ação */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border-subtle);
+}
+
+.primary-btn, .secondary-btn {
+    padding: 1.2rem 2.5rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.15rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.primary-btn {
+    background-color: var(--color-azul-royal);
+    color: var(--color-text-light);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.primary-btn:hover {
+    background-color: hsl(225, 70%, 30%); /* Tom mais escuro ao passar o mouse */
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.secondary-btn {
+    background-color: var(--color-azul-claro);
+    color: var(--color-azul-noturno);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.secondary-btn:hover {
+    background-color: hsl(210, 50%, 55%);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsividade Básica (para telas menores) */
+@media (max-width: 768px) {
+    header {
+        padding: 1rem 1.5rem;
+    }
+
+    header h1 {
+        font-size: 1.8rem;
+    }
+
+    .header-content {
+        flex-direction: column; /* Empilha o conteúdo do cabeçalho */
+        text-align: center;
+    }
+
+    .gcm-logo {
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+
+    main {
+        padding: 1rem;
+        margin: 1rem auto;
+    }
+
+    .card {
+        padding: 1.5rem 1.8rem;
+    }
+
+    .card h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.2rem;
+    }
+
+    .form-row {
+        gap: 1.5rem;
+    }
+
+    .form-group {
+        min-width: 100%; /* Campos ocupam a largura total em telas pequenas */
+    }
+
+    .radio-group {
+        flex-direction: column; /* Botões de rádio empilhados */
+        align-items: flex-start;
+        gap: 0.8rem;
+    }
+
+    .action-buttons {
+        flex-direction: column; /* Botões de ação empilhados */
+        gap: 1.5rem;
+    }
+
+    .primary-btn, .secondary-btn {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+}
